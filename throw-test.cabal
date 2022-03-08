@@ -1,0 +1,37 @@
+cabal-version:       2.4
+name:                throw-test
+version:             1.0.0
+build-type:          Simple
+tested-with:         GHC == 9.2.1
+
+library
+  ghc-options: -Wall
+  hs-source-dirs: src/hs
+
+  default-language:    Haskell2010
+
+  Exposed-modules:     ThrowTest
+
+  Build-depends:
+      base >=4.8 && <5
+  extra-libraries:
+      stdc++
+  cxx-sources: myclib/src/test_error_throwing.cpp
+
+  Build-depends:
+      base >=4.8 && <5
+
+  include-dirs:
+    myclib/include
+
+executable throwtest
+  ghc-options: -Wall
+  hs-source-dirs:
+                 src/hs
+  main-is: Main.hs
+
+  default-language:    Haskell2010
+
+  Build-depends:
+      base >=4.8 && <5,
+      throw-test

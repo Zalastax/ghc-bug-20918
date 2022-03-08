@@ -1,0 +1,72 @@
+
+Minimal reproduction of https://gitlab.haskell.org/ghc/ghc/-/issues/20918.
+There is unexpected behaviour when C++ exception is thrown on Windows.
+Even simple exceptions are not caught in this example.
+
+```
+ekrapie@SE-00025831 MINGW64 ~/programming/ghc-bug-20918
+$ cabal v2-repl
+Warning: The package list for 'hackage.haskell.org' is 59 days old.
+Run 'cabal update' to get the latest list of available packages.
+Resolving dependencies...
+Build profile: -w ghc-9.2.1 -O1
+In order, the following will be built (use -v for more details):
+ - throw-test-1.0.0 (lib) (configuration changed)
+Configuring library for throw-test-1.0.0..
+Preprocessing library for throw-test-1.0.0..
+GHCi, version 9.2.1: https://www.haskell.org/ghc/  :? for help
+Ok, one module loaded.
+ghci> hello
+"Hi"
+equivalent_to_id test-throw 1
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+cabal.exe: repl failed for throw-test-1.0.0. The build process terminated with
+exit code 541541187
+
+
+ekrapie@SE-00025831 MINGW64 ~/programming/ghc-bug-20918
+$ cabal v2-run
+Build profile: -w ghc-9.2.1 -O1
+In order, the following will be built (use -v for more details):
+ - throw-test-1.0.0 (lib) (first run)
+ - throw-test-1.0.0 (exe:throwtest) (configuration changed)
+Preprocessing library for throw-test-1.0.0..
+Building library for throw-test-1.0.0..
+Configuring executable 'throwtest' for throw-test-1.0.0..
+Preprocessing executable 'throwtest' for throw-test-1.0.0..
+Building executable 'throwtest' for throw-test-1.0.0..
+equivalent_to_id test-throw 1
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+equivalent_to_id test-throw caught 20
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+"Hi"
+"88.0"
+"Bye"
+```
